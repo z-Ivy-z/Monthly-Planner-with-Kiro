@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mi Planner Digital 🌸</title>
+
+
+<style>
+
+*{
+    box-sizing:border-box;
+    font-family:"Comic Sans MS", "Segoe UI", sans-serif;
+}
+
+
+body{
+
+    margin:0;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+
+    /* Fondo libreta */
+    background-color:#fffaf5;
+
+    background-image:
+
+    linear-gradient(
+        to right,
+        transparent 80px,
+        #ffb6c1 80px,
+        #ffb6c1 83px,
+        transparent 83px
+    ),
+
+    linear-gradient(
+        #d8e9ff 1px,
+        transparent 1px
+    );
+
+    background-size:
+    100% 100%,
+    100% 35px;
+
+}
+
+
+
+/* Hoja principal */
+
+.planner{
+
+    width:95%;
+    max-width:1000px;
+
+    background:#ffffffdd;
+
+    padding:30px;
+
+    border-radius:25px;
+
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.15);
+
+
+}
+
+
+
+/* Titulo */
+
+.titulo{
+
+    text-align:center;
+
+    color:#d47fa6;
+
+    font-size:35px;
+
+}
+
+
+
+/* Navegación */
+
+.navegacion{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:10px 15px;
+
+    border-radius:15px;
+
+    background:#ffc8dd;
+
+    font-size:16px;
+
+}
+
+
+button:hover{
+
+    transform:scale(1.05);
+
+}
+
+
+
+/* Nombre del mes */
+
+#mes{
+
+    color:#8b7aa8;
+
+}
+
+
+
+/* Dias */
+
+.semana{
+
+    margin-top:20px;
+
+    display:grid;
+
+    grid-template-columns:repeat(7,1fr);
+
+    text-align:center;
+
+    color:#a57ca8;
+
+    font-weight:bold;
+
+}
+
+
+
+#calendario{
+
+    display:grid;
+
+    grid-template-columns:repeat(7,1fr);
+
+}
+
+
+
+/* Casillas */
+
+.dia{
+
+    min-height:120px;
+
+    border:1px dashed #d9c2ff;
+
+    padding:8px;
+
+    cursor:pointer;
+
+    background:#fff;
+
+}
+
+
+
+.dia:hover{
+
+    background:#fff0f6;
+
+}
+
+
+
+.numero{
+
+    font-weight:bold;
+
+    color:#8d7a9e;
+
+}
+
+
+
+.otro{
+
+    background:#f5f5f5;
+
+}
+
+
+
+.evento{
+
+    margin-top:8px;
+
+    padding:7px;
+
+    border-radius:12px;
+
+    background:#ffe5ec;
+
+    color:#7b5570;
+
+    font-size:13px;
+
+}
+
+
+
+/* Modal */
+
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:#0005;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+
+.caja{
+
+
+    background:#fff;
+
+    width:350px;
+
+    padding:30px;
+
+    border-radius:25px;
+
+
+    box-shadow:
+    0 10px 30px #999;
+
+
+}
+
+
+
+.caja h2{
+
+    text-align:center;
+
+    color:#d47fa6;
+
+}
+
+
+
+input,textarea{
+
+
+    width:100%;
+
+    margin:10px 0;
+
+    padding:12px;
+
+
+    border-radius:15px;
+
+    border:1px solid #e6c9dc;
+
+
+}
+
+
+
+textarea{
+
+    height:90px;
+
+}
+
+
+
+.guardar{
+
+    background:#b8e0d2;
+
+}
+
+
+.cancelar{
+
+    background:#ffcad4;
+
+}
+
+
+
+/* Decoraciones */
+
+.sticker{
+
+    position:absolute;
+
+    font-size:40px;
+
+}
+
+
+
+.flor{
+
+    top:20px;
+
+    right:40px;
+
+}
+
+
+.corazon{
+
+    bottom:30px;
+
+    left:40px;
+
+}
+
+
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="sticker flor">
+🌸
+</div>
+
+
+<div class="sticker corazon">
+💗
+</div>
+
+
+
+<div class="planner">
+
+
+<h1 class="titulo">
+📔 Mi Planner Digital
+</h1>
+
+
+
+<div class="navegacion">
+
+
+<button onclick="cambiarMes(-1)">
+⬅️
+</button>
+
+
+<h2 id="mes"></h2>
+
+
+<button onclick="cambiarMes(1)">
+➡️
+</button>
+
+
+</div>
+
+
+
+<div class="semana">
+
+<div>Lun</div>
+<div>Mar</div>
+<div>Mié</div>
+<div>Jue</div>
+<div>Vie</div>
+<div>Sáb</div>
+<div>Dom</div>
+
+</div>
+
+
+
+<div id="calendario"></div>
+
+
+
+</div>
+
+
+
+
+<!-- Ventana evento -->
+
+
+<div class="modal" id="modal">
+
+
+<div class="caja">
+
+
+<h2>
+✨ Nuevo evento
+</h2>
+
+
+<input 
+id="titulo"
+placeholder="Nombre del evento">
+
+
+<input 
+id="hora"
+type="time">
+
+
+
+<textarea 
+id="descripcion"
+placeholder="Detalles...">
+</textarea>
+
+
+
+<button class="guardar" onclick="guardarEvento()">
+
+Guardar 🌷
+
+</button>
+
+
+
+<button class="cancelar" onclick="cerrarModal()">
+
+Cancelar
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+<script>
+
+
+let fecha = new Date();
+
+
+let seleccionado="";
+
+
+
+let eventos =
+JSON.parse(localStorage.getItem("planner")) || {};
+
+
+
+
+function dibujar(){
+
+
+let calendario =
+document.getElementById("calendario");
+
+
+calendario.innerHTML="";
+
+
+
+let año=fecha.getFullYear();
+
+let mes=fecha.getMonth();
+
+
+
+document.getElementById("mes")
+.innerHTML=
+
+fecha.toLocaleDateString(
+"es-ES",
+{
+month:"long",
+year:"numeric"
+}
+);
+
+
+
+
+let inicio =
+new Date(año,mes,1)
+.getDay();
+
+
+
+inicio =
+inicio===0 ? 6 : inicio-1;
+
+
+
+let total =
+new Date(año,mes+1,0)
+.getDate();
+
+
+
+for(let i=0;i<inicio;i++){
+
+
+let div=document.createElement("div");
+
+div.className="dia otro";
+
+calendario.appendChild(div);
+
+
+}
+
+
+
+for(let d=1;d<=total;d++){
+
+
+
+let div=document.createElement("div");
+
+div.className="dia";
+
+
+let id =
+`${año}-${mes}-${d}`;
+
+
+
+div.innerHTML=
+`
+<div class="numero">
+${d}
+</div>
+`;
+
+
+
+if(eventos[id]){
+
+
+div.innerHTML+=
+
+`
+<div class="evento">
+
+🌸 ${eventos[id].titulo}
+
+<br>
+
+⏰ ${eventos[id].hora}
+
+<br>
+
+<button onclick="eliminar('${id}')">
+
+🗑️
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+
+div.onclick=()=>{
+
+
+seleccionado=id;
+
+document.getElementById("modal")
+.style.display="flex";
+
+
+};
+
+
+
+calendario.appendChild(div);
+
+
+}
+
+
+}
+
+
+
+
+function guardarEvento(){
+
+
+
+let titulo=
+document.getElementById("titulo").value;
+
+
+let hora=
+document.getElementById("hora").value;
+
+
+
+let descripcion=
+document.getElementById("descripcion").value;
+
+
+
+eventos[seleccionado]={
+
+titulo,
+hora,
+descripcion
+
+};
+
+
+
+localStorage.setItem(
+"planner",
+JSON.stringify(eventos)
+);
+
+
+
+cerrarModal();
+
+dibujar();
+
+
+}
+
+
+
+
+function eliminar(id){
+
+
+delete eventos[id];
+
+
+localStorage.setItem(
+"planner",
+JSON.stringify(eventos)
+);
+
+
+dibujar();
+
+
+}
+
+
+
+
+
+function cerrarModal(){
+
+
+document.getElementById("modal")
+.style.display="none";
+
+
+}
+
+
+
+function cambiarMes(valor){
+
+
+fecha.setMonth(
+fecha.getMonth()+valor
+);
+
+
+dibujar();
+
+
+}
+
+
+
+dibujar();
+
+
+</script>
+
+
+</body>
+</html>

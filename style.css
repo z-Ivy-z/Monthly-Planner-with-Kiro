@@ -1,0 +1,486 @@
+/* ══════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #fffdf7;
+    background-image:
+        linear-gradient(to right, transparent 0, transparent 60px, #ff9a9a 60px, #ff9a9a 62px, transparent 62px),
+        linear-gradient(to bottom, #d9e8ff 1px, transparent 1px);
+    background-size: 100% 100%, 100% 30px;
+    overflow: hidden; /* sin scroll en el body, cada panel scrollea */
+}
+
+/* ══════════════════════════════════════════════════
+   LAYOUT: DOS MITADES
+══════════════════════════════════════════════════ */
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.panel {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 24px;
+}
+
+/* Divisor visual entre paneles */
+.panel-calendario {
+    border-right: 2px dashed #ffc8dd;
+    background: #fffaf5cc;
+    /* Fondo libreta heredado del body */
+}
+
+.panel-todo {
+    background: transparent;
+    padding-left: 30px;
+}
+
+.panel-titulo {
+    text-align: center;
+    color: #d47fa6;
+    font-size: 28px;
+    margin-bottom: 18px;
+    font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+}
+
+/* ══════════════════════════════════════════════════
+   CALENDARIO
+══════════════════════════════════════════════════ */
+.cal-navegacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.cal-navegacion h2 {
+    color: #8b7aa8;
+    font-size: 17px;
+    text-transform: capitalize;
+}
+
+.cal-navegacion button {
+    border: none;
+    cursor: pointer;
+    padding: 8px 13px;
+    border-radius: 14px;
+    background: #ffc8dd;
+    font-size: 15px;
+    transition: transform .2s;
+}
+
+.cal-navegacion button:hover {
+    transform: scale(1.08);
+}
+
+.cal-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    color: #a57ca8;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+#calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+/* Celda día */
+.dia {
+    min-height: 90px;
+    border: 1px dashed #d9c2ff;
+    padding: 6px;
+    cursor: pointer;
+    background: #fff;
+    transition: background .15s;
+    position: relative;
+}
+
+.dia:hover {
+    background: #fff0f6;
+}
+
+.numero {
+    font-weight: bold;
+    color: #8d7a9e;
+    font-size: 13px;
+}
+
+.otro {
+    background: #f5f5f5;
+    cursor: default;
+}
+
+/* Evento dentro de celda */
+.evento {
+    margin-top: 5px;
+    padding: 5px 7px;
+    border-radius: 10px;
+    background: #ffe5ec;
+    color: #7b5570;
+    font-size: 11px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.ev-desc {
+    color: #9e7a90;
+    font-style: italic;
+}
+
+.btn-ev-eliminar {
+    display: inline-block;
+    margin-top: 3px;
+    padding: 2px 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 11px;
+    border-radius: 6px;
+    transition: background .2s;
+}
+
+.btn-ev-eliminar:hover {
+    background: #ffd0dc;
+    transform: none;
+}
+
+/* ══════════════════════════════════════════════════
+   BOTONES DE ACCIÓN (panel derecho)
+══════════════════════════════════════════════════ */
+.accion {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.btnAgregar {
+    background: #CDE9DC;
+    color: #406254;
+    border: none;
+    border-radius: 15px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: .25s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btnAgregar:hover {
+    background: #B8DFC8;
+    transform: translateY(-2px);
+}
+
+.btnAgregarEvento {
+    background: #ffc8dd;
+    color: #7b3055;
+    border: none;
+    border-radius: 15px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: .25s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btnAgregarEvento:hover {
+    background: #ffb0cc;
+    transform: translateY(-2px);
+}
+
+/* ══════════════════════════════════════════════════
+   PIZARRÓN DE NOTAS
+══════════════════════════════════════════════════ */
+.pizarron {
+    width: 100%;
+    border-radius: 20px;
+    background: #c1e8ff2a;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 24px;
+    border: 2px solid #ffffff;
+}
+
+.nota {
+    padding: 18px;
+    border-radius: 20px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.08);
+    animation: aparecer .3s;
+    transition: .3s;
+}
+
+.nota:hover {
+    transform: translateY(-5px);
+}
+
+.nota h3 {
+    margin-bottom: 12px;
+}
+
+.nota p {
+    margin: 6px 0;
+    font-size: 13px;
+}
+
+.btn-eliminar {
+    margin-top: 12px;
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 13px;
+    background: #ffffff;
+    color: #5c5c5c;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 13px;
+}
+
+.btn-eliminar:hover {
+    background: #ebebeb;
+    transform: translateY(-2px);
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: scale(.85); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL BASE
+══════════════════════════════════════════════════ */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+    z-index: 1000;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #FFF;
+    width: 760px;
+    max-width: 95%;
+    border-radius: 30px;
+    padding: 30px;
+    position: relative;
+    transform: translateY(-30px);
+    transition: .3s;
+    box-shadow: 0 20px 50px rgba(0,0,0,.15);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+}
+
+/* Modal evento: más compacto */
+.modal-evento-content {
+    width: 460px;
+}
+
+.close {
+    position: absolute;
+    top: 18px; right: 22px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #888;
+    transition: .3s;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #E57373;
+    transform: rotate(90deg);
+}
+
+/* ══════════════════════════════════════════════════
+   FORMULARIO
+══════════════════════════════════════════════════ */
+.form-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.form-header h2 {
+    color: #8B6FAF;
+    font-size: 26px;
+    margin-bottom: 4px;
+}
+
+.form-header p {
+    color: #999;
+    font-size: 13px;
+}
+
+.row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.flex2 { flex: 2; }
+.row .input-group { flex: 1; }
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.input-group label {
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #777;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 11px 15px;
+    border: none;
+    border-radius: 14px;
+    background: #F7F7FB;
+    color: #555;
+    font-size: 14px;
+    outline: none;
+    transition: .25s;
+    font-family: 'Poppins', sans-serif;
+}
+
+textarea { resize: none; }
+
+input:focus, textarea:focus, select:focus {
+    background: white;
+    box-shadow: 0 0 0 3px #F0D9EF;
+}
+
+::placeholder { color: #BBB; }
+
+/* Colores */
+.selector-color {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.color {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 3px 8px rgba(0,0,0,.1);
+}
+.color:hover { transform: scale(1.15); }
+.color:focus { outline: none; }
+.color.active { transform: scale(1.2); border: 3px solid #777; }
+.color:nth-child(1) { background: #F0D9EF; }
+.color:nth-child(2) { background: #FCDCE1; }
+.color:nth-child(3) { background: #FFE6BB; }
+.color:nth-child(4) { background: #E9ECCE; }
+.color:nth-child(5) { background: #CDE9DC; }
+.color:nth-child(6) { background: #C4DFE5; }
+
+/* Botones del formulario */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-cancelar {
+    background: #EFEFF7;
+    color: #666;
+    border: none;
+    border-radius: 14px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: .25s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-cancelar:hover { background: #E2E2EC; }
+
+.btn-guardar {
+    background: #CDE9DC;
+    color: #406254;
+    border: none;
+    border-radius: 14px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: .25s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.btn-guardar:hover {
+    background: #B8DFC8;
+    transform: translateY(-2px);
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-thumb { background: #D8D8E8; border-radius: 20px; }
+::-webkit-scrollbar-track { background: #F5F5FA; }
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+@media (max-width: 860px) {
+    body { overflow: auto; }
+
+    .app-layout {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .panel {
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .panel-calendario {
+        border-right: none;
+        border-bottom: 2px dashed #ffc8dd;
+    }
+
+    .row { flex-direction: column; gap: 0; }
+
+    .form-buttons { flex-direction: column; }
+    .btn-cancelar, .btn-guardar { width: 100%; }
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner & TO DO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="img/png" href="./img/tarea-completada.png">
+</head>
+<body>
+
+    <!-- ══════════════════════════════════
+         LAYOUT PRINCIPAL: dos mitades
+    ══════════════════════════════════ -->
+    <div class="app-layout">
+
+        <!-- ── MITAD IZQUIERDA: CALENDARIO ── -->
+        <div class="panel panel-calendario">
+
+            <h1 class="panel-titulo">📔 Mi Planner</h1>
+
+            <!-- Navegación mes -->
+            <div class="cal-navegacion">
+                <button id="btnPrevMes">⬅️</button>
+                <h2 id="calMes"></h2>
+                <button id="btnNextMes">➡️</button>
+            </div>
+
+            <!-- Días de la semana -->
+            <div class="cal-semana">
+                <div>Lun</div><div>Mar</div><div>Mié</div>
+                <div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+            </div>
+
+            <!-- Grid del calendario -->
+            <div id="calendario"></div>
+
+        </div>
+
+        <!-- ── MITAD DERECHA: TO DO ── -->
+        <div class="panel panel-todo">
+
+            <h1 class="panel-titulo">📝 TO DO</h1>
+
+            <!-- Botones de acción -->
+            <div class="accion">
+                <button class="btnAgregar" id="btnAgregarTarea">➕ Agregar tarea</button>
+                <button class="btnAgregarEvento" id="btnAgregarEvento">🗓️ Agregar evento</button>
+            </div>
+
+            <!-- Pizarrón de notas -->
+            <section class="pizarron" id="pizarron"></section>
+
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         MODAL TAREA
+    ══════════════════════════════════ -->
+    <div class="modal" id="modalTarea">
+        <div class="modal-content">
+            <span class="close" id="closeTarea">&times;</span>
+            <form class="task-form" id="taskForm">
+                <div class="form-header">
+                    <h2>✨ Nueva tarea</h2>
+                    <p>Organiza tu día de una forma sencilla.</p>
+                </div>
+
+                <!-- Fila 1 -->
+                <div class="row">
+                    <div class="input-group flex2">
+                        <label>Título</label>
+                        <input type="text" id="titulo" placeholder="¿Qué debes hacer?">
+                    </div>
+                    <div class="input-group">
+                        <label>Categoría</label>
+                        <select id="categoria">
+                            <option>Escuela</option>
+                            <option>Trabajo</option>
+                            <option>Personal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="descripcion" rows="3" placeholder="Agrega una descripción..."></textarea>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="row">
+                    <div class="input-group">
+                        <label>Fecha</label>
+                        <input type="date" id="fecha">
+                    </div>
+                    <div class="input-group">
+                        <label>Hora</label>
+                        <input type="time" id="hora">
+                    </div>
+                    <div class="input-group">
+                        <label>Prioridad</label>
+                        <select id="prioridad">
+                            <option>🟢 Baja</option>
+                            <option>🟡 Media</option>
+                            <option>🔴 Alta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fila 3 -->
+                <div class="row">
+                    <div class="input-group flex2">
+                        <label>Etiquetas</label>
+                        <input type="text" id="etiquetas" placeholder="#Proyecto #Escuela">
+                    </div>
+                    <div class="input-group">
+                        <label>Estado</label>
+                        <select id="estado">
+                            <option>Pendiente</option>
+                            <option>En progreso</option>
+                            <option>Completada</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="input-group">
+                    <label>Color de la tarjeta</label>
+                    <div class="selector-color">
+                        <button type="button" class="color" data-color="#F0D9EF"></button>
+                        <button type="button" class="color" data-color="#FCDCE1"></button>
+                        <button type="button" class="color" data-color="#FFE6BB"></button>
+                        <button type="button" class="color" data-color="#E9ECCE"></button>
+                        <button type="button" class="color" data-color="#CDE9DC"></button>
+                        <button type="button" class="color" data-color="#C4DFE5"></button>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="form-buttons">
+                    <button type="reset" class="btn-cancelar" id="btnCancelarTarea">Cancelar</button>
+                    <button type="submit" class="btn-guardar" id="btnGuardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         MODAL EVENTO (calendario)
+    ══════════════════════════════════ -->
+    <div class="modal" id="modalEvento">
+        <div class="modal-content modal-evento-content">
+            <span class="close" id="closeEvento">&times;</span>
+            <div class="form-header">
+                <h2>🗓️ Nuevo evento</h2>
+                <p id="eventoFechaLabel">Selecciona una fecha</p>
+            </div>
+
+            <div class="input-group">
+                <label>Fecha</label>
+                <input type="date" id="eventoFecha">
+            </div>
+            <div class="input-group">
+                <label>Nombre del evento</label>
+                <input type="text" id="eventoTitulo" placeholder="¿Qué ocurre ese día?">
+            </div>
+            <div class="input-group">
+                <label>Hora</label>
+                <input type="time" id="eventoHora">
+            </div>
+            <div class="input-group">
+                <label>Detalles</label>
+                <textarea id="eventoDescripcion" rows="3" placeholder="Información adicional..."></textarea>
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn-cancelar" id="btnCancelarEvento">Cancelar</button>
+                <button type="button" class="btn-guardar" id="btnGuardarEvento">Guardar 🌷</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
