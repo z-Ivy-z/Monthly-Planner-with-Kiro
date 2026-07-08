@@ -114,14 +114,6 @@
                         <label>Etiquetas</label>
                         <input type="text" id="etiquetas" placeholder="#Proyecto #Escuela">
                     </div>
-                    <div class="input-group">
-                        <label>Estado</label>
-                        <select id="estado">
-                            <option>Pendiente</option>
-                            <option>En progreso</option>
-                            <option>Completada</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!-- Color -->
@@ -174,11 +166,42 @@
                 <textarea id="eventoDescripcion" rows="3" placeholder="Información adicional..."></textarea>
             </div>
 
+            <div class="input-group">
+                <label>Color del evento</label>
+                <div class="selector-color selector-color-evento">
+                    <button type="button" class="color-ev" data-color="#ffe5ec" style="background:#ffe5ec"></button>
+                    <button type="button" class="color-ev" data-color="#ffd6a5" style="background:#ffd6a5"></button>
+                    <button type="button" class="color-ev" data-color="#fdffb6" style="background:#fdffb6"></button>
+                    <button type="button" class="color-ev" data-color="#caffbf" style="background:#caffbf"></button>
+                    <button type="button" class="color-ev" data-color="#a0c4ff" style="background:#a0c4ff"></button>
+                    <button type="button" class="color-ev" data-color="#e8c9f5" style="background:#e8c9f5"></button>
+                </div>
+            </div>
+
             <div class="form-buttons">
                 <button type="button" class="btn-cancelar" id="btnCancelarEvento">Cancelar</button>
                 <button type="button" class="btn-guardar" id="btnGuardarEvento">Guardar 🌷</button>
             </div>
         </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         HISTORIAL DE COMPLETADAS
+    ══════════════════════════════════ -->
+
+    <!-- Botón flotante -->
+    <button class="btn-historial" id="btnHistorial" title="Tareas completadas">
+        ✅
+        <span class="historial-badge" id="historialBadge">0</span>
+    </button>
+
+    <!-- Panel deslizable -->
+    <div class="historial-panel" id="historialPanel">
+        <div class="historial-header">
+            <h3>🏆 Completadas</h3>
+            <button class="historial-cerrar" id="historialCerrar">&times;</button>
+        </div>
+        <ul class="historial-lista" id="historialLista"></ul>
     </div>
 
     <script src="script.js"></script>

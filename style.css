@@ -135,29 +135,39 @@ body {
     font-size: 11px;
     line-height: 1.4;
     word-break: break-word;
+    cursor: default;
 }
 
+.ev-body { margin-bottom: 4px; }
+
 .ev-desc {
-    color: #9e7a90;
+    color: inherit;
+    opacity: .75;
     font-style: italic;
 }
 
+/* Botones de acción del evento (editar + eliminar) */
+.ev-acciones {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.btn-ev-editar,
 .btn-ev-eliminar {
-    display: inline-block;
-    margin-top: 3px;
-    padding: 2px 5px;
+    flex: 1;
+    padding: 2px 4px;
     border: none;
-    background: transparent;
+    background: rgba(255,255,255,.45);
     cursor: pointer;
     font-size: 11px;
     border-radius: 6px;
     transition: background .2s;
+    text-align: center;
 }
 
-.btn-ev-eliminar:hover {
-    background: #ffd0dc;
-    transform: none;
-}
+.btn-ev-editar:hover  { background: rgba(255,255,255,.75); transform: none; }
+.btn-ev-eliminar:hover { background: rgba(255,150,150,.35); transform: none; }
 
 /* ══════════════════════════════════════════════════
    BOTONES DE ACCIÓN (panel derecho)
@@ -223,11 +233,14 @@ body {
     border-radius: 20px;
     box-shadow: 0 8px 18px rgba(0,0,0,.08);
     animation: aparecer .3s;
-    transition: .3s;
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+    position: relative;
 }
 
 .nota:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,.13);
 }
 
 .nota h3 {
@@ -239,29 +252,254 @@ body {
     font-size: 13px;
 }
 
+/* Botones de acción de la nota */
+.nota-acciones {
+    display: flex;
+    gap: 6px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.btn-completar,
+.btn-editar-nota,
 .btn-eliminar {
-    margin-top: 12px;
-    width: 100%;
-    padding: 9px;
+    flex: 1;
+    min-width: 60px;
+    padding: 7px 4px;
     border: none;
     border-radius: 13px;
     background: #ffffff;
     color: #5c5c5c;
     font-weight: 600;
     cursor: pointer;
-    transition: .3s;
-    font-size: 13px;
+    transition: .25s;
+    font-size: 11px;
+    text-align: center;
+}
+
+.btn-completar {
+    background: #d4f5e2;
+    color: #2e7d52;
+}
+
+.btn-completar:hover {
+    background: #b6edce;
+    transform: translateY(-1px);
+}
+
+.btn-editar-nota:hover {
+    background: #e8e8f8;
+    transform: translateY(-1px);
 }
 
 .btn-eliminar:hover {
-    background: #ebebeb;
-    transform: translateY(-2px);
+    background: #ffe0e0;
+    color: #c0392b;
+    transform: translateY(-1px);
 }
 
 @keyframes aparecer {
     from { opacity: 0; transform: scale(.85); }
     to   { opacity: 1; transform: scale(1); }
 }
+
+/* ══════════════════════════════════════════════════
+   NOTA COMPLETADA — brillo y salida
+══════════════════════════════════════════════════ */
+
+.nota-completada {
+    animation: brillo 5s ease forwards !important;
+    pointer-events: none;
+}
+
+@keyframes brillo {
+    0%   { box-shadow: 0 8px 18px rgba(0,0,0,.08); filter: brightness(1); }
+    10%  { box-shadow: 0 0 30px 8px #ffe97a, 0 0 60px 16px #ffd700aa; filter: brightness(1.25); }
+    40%  { box-shadow: 0 0 40px 12px #ffe97a, 0 0 80px 24px #ffd700aa; filter: brightness(1.35); }
+    80%  { box-shadow: 0 0 25px 8px #ffe97a88; filter: brightness(1.15); }
+    100% { box-shadow: 0 8px 18px rgba(0,0,0,.08); filter: brightness(1); opacity: 1; }
+}
+
+.nota-salida {
+    animation: volarDerecha .6s ease forwards !important;
+}
+
+@keyframes volarDerecha {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to   { opacity: 0; transform: translateX(120%) scale(.6); }
+}
+
+/* ══════════════════════════════════════════════════
+   BOTÓN FLOTANTE — historial
+══════════════════════════════════════════════════ */
+
+.btn-historial {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    border: none;
+    background: #CDE9DC;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,.18);
+    transition: transform .25s, box-shadow .25s;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-historial:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.22);
+}
+
+.historial-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #e05c7a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ══════════════════════════════════════════════════
+   PANEL HISTORIAL
+══════════════════════════════════════════════════ */
+
+.historial-panel {
+    position: fixed;
+    bottom: 105px;
+    right: 32px;
+    width: 340px;
+    max-height: 480px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.18);
+    z-index: 800;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(20px) scale(.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .3s, opacity .3s;
+}
+
+.historial-panel.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.historial-header h3 {
+    color: #8B6FAF;
+    font-size: 17px;
+    margin: 0;
+}
+
+.historial-cerrar {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #aaa;
+    line-height: 1;
+    padding: 0 4px;
+    transition: color .2s;
+}
+.historial-cerrar:hover { color: #e05c7a; transform: none; }
+
+.historial-lista {
+    list-style: none;
+    overflow-y: auto;
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.historial-vacio {
+    text-align: center;
+    color: #bbb;
+    font-size: 13px;
+    padding: 24px 0;
+}
+
+.historial-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #fafafa;
+    border-left: 4px solid #ccc;
+}
+
+.hi-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.hi-info strong {
+    font-size: 13px;
+    color: #444;
+}
+
+.hi-meta {
+    font-size: 11px;
+    color: #999;
+}
+
+.hi-desc {
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+}
+
+.hi-completada {
+    font-size: 11px;
+    color: #7bc99a;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.btn-hi-borrar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 4px;
+    border-radius: 8px;
+    transition: background .2s;
+    flex-shrink: 0;
+    align-self: center;
+}
+.btn-hi-borrar:hover { background: #ffe0e0; transform: none; }
 
 /* ══════════════════════════════════════════════════
    MODAL BASE
@@ -386,7 +624,7 @@ input:focus, textarea:focus, select:focus {
 
 ::placeholder { color: #BBB; }
 
-/* Colores */
+/* Colores — compartido entre tarjetas y eventos */
 .selector-color {
     display: flex;
     gap: 12px;
@@ -394,6 +632,7 @@ input:focus, textarea:focus, select:focus {
     margin-top: 6px;
 }
 
+/* Botones de color de TARJETA */
 .color {
     width: 34px; height: 34px;
     border-radius: 50%;
@@ -411,6 +650,28 @@ input:focus, textarea:focus, select:focus {
 .color:nth-child(4) { background: #E9ECCE; }
 .color:nth-child(5) { background: #CDE9DC; }
 .color:nth-child(6) { background: #C4DFE5; }
+
+/* Botones de color de EVENTO */
+.selector-color-evento {
+    gap: 10px;
+}
+
+.color-ev {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    transition: .25s;
+    box-shadow: 0 3px 8px rgba(0,0,0,.12);
+    position: relative;
+}
+.color-ev:hover { transform: scale(1.18); }
+.color-ev:focus { outline: none; }
+.color-ev.active {
+    transform: scale(1.22);
+    border: 3px solid #888;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #aaa;
+}
 
 /* Botones del formulario */
 .form-buttons {
