@@ -46,12 +46,12 @@ Necesitas tener **Git** instalado en tu computadora. Si no lo tienes, descárgal
 
 3. **Clona el repositorio** con el siguiente comando:
    ```bash
-   git clone https://github.com/tu-usuario/monthly-planner.git
+   git clone https://github.com/z-Ivy-z/Monthly-Planner-with-Kiro.git
    ```
 
 4. **Entra a la carpeta** del proyecto:
    ```bash
-   cd monthly-planner
+   cd Monthly Planner with Kiro
    ```
 
 5. **Abre el archivo `index.html`** directamente en tu navegador (doble clic) o usa la extensión **Live Server** de VS Code para verlo con recarga automática.
